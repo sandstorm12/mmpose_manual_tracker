@@ -1,0 +1,15 @@
+input_video: "path/to/the/input/video"
+detection:
+  model: "rtmpose-x_8xb256-700e_body8-halpe26-384x288"
+  output: "path/to/the/desired/output/detection/file.pkl"
+  threshold: 0.5
+  max_length: -1  # -1 means no limit
+  visualize: True
+  visualize_size:
+    - 1280
+    - 720
+tracking:
+  max_length: -1
+  iou_threshold: .7
+  resume: True
+  output: "path/to/the/desired/output/tracking/and/detection/file.pkl"
