@@ -1,0 +1,87 @@
+#!/usr/bin/python3
+
+import os
+import math
+import yaml
+import argparse
+import mm_tracker.mmdetector as mmdetector
+import mm_tracker.mmtracker as mmtracker
+
+from mm_tracker._config_helper import copy_sample_config
+
+
+class TilePlayer(object):
+    def _add_exclusive_arguments(self, parser):
+        group = parser.add_mutually_exclusive_group(required=True)
+        group.add_argument(
+            '-g', '--generate',
+            help=(
+                'Generate sample config file on the provided path.'
+            ),
+            action="store_true",
+        )
+        group.add_argument(
+            '-d', '--detect',
+            help=(
+                'Starts the detection process.'
+            ),
+            action="store_true",
+        )
+        group.add_argument(
+            '-t', '--track',
+            help=(
+                'Starts the tracking process.'
+            ),
+            action="store_true",
+        )
+
+    def _add_config_arguments(self, parser):
+        parser.add_argument(
+            '-c', '--config',
+            help=(
+                'Generate sample config file on the provided path.'
+            ),
+            type=str,
+            default=None
+        )
+        
+    def _get_arguments(self):
+        parser = argparse.ArgumentParser()
+        
+        self._add_config_arguments(parser)
+        self._add_exclusive_arguments(parser)
+
+        args = parser.parse_args()
+
+        return args, parser
+
+    @staticmethod
+    def _load_configs(path):
+        with open(path, 'r') as yaml_file:
+            configs = yaml.safe_load(yaml_file)
+
+        return configs
+    
+
+    def _parse_run_detector(self, config_path):
+        configs = self._load_configs(config_path)
+        print(configs)
+
+        mmdetector.detect(configs)
+    
+
+    def start(self):
+        args, parser = self._get_arguments()
+
+        if args.generate:
+            copy_sample_config(os.getcwd())
+        elif args.detect:
+            if args.config is None:
+                parser.error("The -c/--config argument is required when -d is specified.")
+            else:
+                self._parse_run_detector(args.config)
+
+
+if __name__ == "__main__":
+    tile_player = TilePlayer()
+    tile_player.start()
