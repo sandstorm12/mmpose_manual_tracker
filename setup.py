@@ -10,7 +10,7 @@ def read_requirements(path='./requirements.txt'):
 
 setup(
     name="MMTracker",
-    version="0.1.0",
+    version="0.2.0",
     author="Hamid Mohammadi",
     author_email="sandstormeatwo@gmail.com",
     description="A tool to manually assign tracking id to objects detected by an mmpose detector with some assisted tracking",
