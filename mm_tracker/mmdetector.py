@@ -1,5 +1,6 @@
 import cv2
 import yaml
+import pickle
 
 from tqdm import tqdm
 from mmpose.apis import MMPoseInferencer
@@ -87,8 +88,8 @@ def _detect(model, configs):
 
 
 def _store_results(results, path):
-    with open(path, 'w') as yaml_file:
-        yaml.dump(results, yaml_file)
+    with open(path, 'wb') as handle:
+        pickle.dump(results, handle)
 
 
 def detect(configs):

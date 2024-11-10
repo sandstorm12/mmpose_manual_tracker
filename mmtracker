@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import os
-import math
 import yaml
 import argparse
 import mm_tracker.mmdetector as mmdetector
@@ -10,7 +9,7 @@ import mm_tracker.mmtracker as mmtracker
 from mm_tracker._config_helper import copy_sample_config
 
 
-class TilePlayer(object):
+class MMTracker(object):
     def _add_exclusive_arguments(self, parser):
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument(
@@ -62,13 +61,17 @@ class TilePlayer(object):
 
         return configs
     
-
     def _parse_run_detector(self, config_path):
         configs = self._load_configs(config_path)
         print(configs)
 
         mmdetector.detect(configs)
     
+    def _parse_run_tracker(self, config_path):
+        configs = self._load_configs(config_path)
+        print(configs)
+
+        mmtracker.track(configs)
 
     def start(self):
         args, parser = self._get_arguments()
@@ -80,8 +83,13 @@ class TilePlayer(object):
                 parser.error("The -c/--config argument is required when -d is specified.")
             else:
                 self._parse_run_detector(args.config)
+        elif args.track:
+            if args.config is None:
+                parser.error("The -c/--config argument is required when -d is specified.")
+            else:
+                self._parse_run_tracker(args.config)
 
 
 if __name__ == "__main__":
-    tile_player = TilePlayer()
-    tile_player.start()
+    instance = MMTracker()
+    instance.start()
