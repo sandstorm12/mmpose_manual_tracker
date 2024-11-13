@@ -54,8 +54,11 @@ mmtracker -t -c config.yml
 ## Controls
 
 `e`: go to next frame
+
 `q`: go to previouse frame
+
 `s`: quit after saving the current tracking ids to the specified output
+
 `0-9`: first press selects the bounding box and second press assigns a tracking id
 
 
